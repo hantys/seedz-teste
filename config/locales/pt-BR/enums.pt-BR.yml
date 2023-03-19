@@ -1,0 +1,14 @@
+pt-BR:
+  enums:
+    default_status: &default_status
+      status:
+        enabled: Publicado
+        disabled: Não Publicado
+
+    default_alt_status: &default_alt_status
+      status:
+        enabled: Habilitado
+        disabled: Desabilitado
+      kind_status:
+        used: Usado
+        newed: Novo

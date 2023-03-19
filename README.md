@@ -1,25 +1,10 @@
-# README
+## Instalação e execução da aplicação
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Passos.
 
-Things you may want to cover:
+1. Criar banco e rodar migrações: ``$ docker-compose exec app bundle exec rake db:setup db:migrate``.
+2. Iniciar a aplicação: ``$ docker-compose up -d``.
+3. Desligar a aplicação: ``$ docker-compose down``.
+4. Arquivo do insominia aqui.
+5. Usuário para login ``cliente@cliente.com`` senha ``123456``.
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-# seedz-teste

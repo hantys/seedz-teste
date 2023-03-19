@@ -1,0 +1,60 @@
+pt-BR:
+  activerecord:
+    models:
+     
+      user: Usuário
+      product: Produto
+      order: Venda
+
+    attributes:
+      default_attributes: &default_attributes
+        content: Conteúdo
+        description: Descrição
+        email: E-mail
+        name: Nome
+        note: Observações
+        status: Status
+        text: Conteúdo
+        title: Título
+        user: Usuário
+        active: Ativo
+        priority: Ordem
+        created_at: Cadastrado em
+        updated_at: Atualizado em
+
+      user:
+        <<: *default_attributes
+        token: Token
+        current_password: Senha atual
+        email: E-mail
+        log: Log de Acesso
+        password: Senha
+        password_confirmation: Confirme a senha
+        profile: Perfil
+        remember_me: Lembrar senha
+        sign_in_count: Qtd. acessos
+        current_sign_in_at: Conexão atual em
+        last_sign_in_at: Última conexão em
+        current_sign_in_ip: IP da conexão atual
+        last_sign_in_ip: IP da última conexão
+        password_changed_at: Senha atualizada em
+        last_activity_at: Última atividade em
+        expired_at: Expirado em
+
+      profile:
+        <<: *default_attributes
+        short_name: Nome de exibição
+        cpf: CPF
+
+      product:
+        <<: *default_attributes
+        price: Valor
+        stock: Estoque
+
+      order:
+        <<: *default_attributes
+        product: Produto
+        product_id: Produto
+        amount: Quantidade
+        total: Total
+

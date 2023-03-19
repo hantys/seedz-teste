@@ -1,17 +1,17 @@
 require_relative 'boot'
 
-require "rails"
+require 'rails'
 # Pick the frameworks you want:
-require "active_model/railtie"
-require "active_job/railtie"
-require "active_record/railtie"
-require "active_storage/engine"
-require "action_controller/railtie"
-require "action_mailer/railtie"
-require "action_mailbox/engine"
-require "action_text/engine"
-require "action_view/railtie"
-require "action_cable/engine"
+require 'active_model/railtie'
+require 'active_job/railtie'
+require 'active_record/railtie'
+require 'active_storage/engine'
+require 'action_controller/railtie'
+require 'action_mailer/railtie'
+require 'action_mailbox/engine'
+require 'action_text/engine'
+require 'action_view/railtie'
+require 'action_cable/engine'
 # require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
@@ -34,7 +34,7 @@ module SeedzTeste
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-    config.time_zone = "America/Sao_Paulo"
+    config.time_zone = 'America/Sao_Paulo'
 
     config.i18n.enforce_available_locales = false
     config.i18n.available_locales = %i[pt-BR en]
@@ -42,7 +42,7 @@ module SeedzTeste
     config.i18n.fallbacks = true
 
     config.i18n.load_path += Dir["#{Rails.root}/config/locales/**/*.{rb,yml}"]
-    config.autoload_paths << Rails.root.join('app', 'auth') 
+    config.autoload_paths << Rails.root.join('app', 'auth')
 
     # Configuration for the application, engines, and railties goes here.
     #
