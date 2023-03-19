@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users
 
-      post '/sign_up' => 'sessions#create'
+      post '/sign_up' => 'sessions#signup'
       post '/sign_in' => 'sessions#signin'
 
       root 'sessions#signin'
