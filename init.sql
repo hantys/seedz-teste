@@ -1,0 +1,3 @@
+CREATE USER seedz;
+ALTER USER seedz WITH SUPERUSER;
+
