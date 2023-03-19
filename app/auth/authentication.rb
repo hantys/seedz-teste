@@ -14,6 +14,6 @@ class Authentication
   end
 
   def generate_token
-    JsonWebToken.encode(user_id: @user.id)
+    JsonWebToken.encode(user_token: @user.token)
   end
 end

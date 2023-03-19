@@ -12,17 +12,17 @@ require 'rails_helper'
 # of tools you can use to make these specs even more expressive, but we're
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
-RSpec.describe '/users', type: :request do
+RSpec.describe '/products', type: :request do
   before(:all) do
     @user = create(:user)
   end
 
   let(:valid_attributes) do
-    attributes_for(:user)
+    attributes_for(:product)
   end
 
   let(:invalid_attributes) do
-    attributes_for(:user, password: nil)
+    attributes_for(:product, name: nil, price: nil)
   end
 
   let(:valid_headers) do
@@ -31,53 +31,54 @@ RSpec.describe '/users', type: :request do
 
   describe 'GET /index' do
     it 'renders a successful response' do
-      create(:user)
-      get api_v1_users_url, headers: valid_headers, as: :json
+      create(:product)
+      get api_v1_products_url, headers: valid_headers, as: :json
       expect(response).to be_successful
     end
   end
 
   describe 'GET /show' do
     it 'renders a successful response' do
-      user = create(:user)
-      get api_v1_user_url(user), headers: valid_headers, as: :json
+      product = create(:product)
+      get api_v1_product_url(product), headers: valid_headers, as: :json
       expect(response).to be_successful
       expect(response.body).to include_json(
-        id: user.id,
-        email: user.email,
-        name: user.name
+        id: product.id,
+        name: product.name,
+        stock: product.stock,
+        price: product.price
       )
     end
   end
 
   describe 'POST /create' do
     context 'with valid parameters' do
-      it 'creates a new User' do
+      it 'creates a new Product' do
         expect do
-          post api_v1_users_url,
-               params: { user: valid_attributes }, headers: valid_headers, as: :json
-        end.to change(User, :count).by(1)
+          post api_v1_products_url,
+               params: { product: valid_attributes }, headers: valid_headers, as: :json
+        end.to change(Product, :count).by(1)
       end
 
-      it 'renders a JSON response with the new user' do
-        post api_v1_users_url,
-             params: { user: valid_attributes }, headers: valid_headers, as: :json
+      it 'renders a JSON response with the new product' do
+        post api_v1_products_url,
+             params: { product: valid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:created)
         expect(response.content_type).to match(a_string_including('application/json'))
       end
     end
 
     context 'with invalid parameters' do
-      it 'does not create a new User' do
+      it 'does not create a new Product' do
         expect do
-          post api_v1_users_url,
-               params: { user: invalid_attributes }, headers: valid_headers, as: :json
-        end.to change(User, :count).by(0)
+          post api_v1_products_url,
+               params: { product: invalid_attributes }, headers: valid_headers, as: :json
+        end.to change(Product, :count).by(0)
       end
 
-      it 'renders a JSON response with errors for the new user' do
-        post api_v1_users_url,
-             params: { user: invalid_attributes }, headers: valid_headers, as: :json
+      it 'renders a JSON response with errors for the new product' do
+        post api_v1_products_url,
+             params: { product: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to match(a_string_including('application/json'))
       end
@@ -87,35 +88,37 @@ RSpec.describe '/users', type: :request do
   describe 'PATCH /update' do
     context 'with valid parameters' do
       let(:new_attributes) do
-        attributes_for(:user, name: 'Pedro Fausto')
+        attributes_for(:product, stock: 5, price: 99.5)
       end
 
-      it 'updates the requested user' do
-        user = create(:user)
-        patch api_v1_user_url(user),
-              params: { user: new_attributes }, headers: valid_headers, as: :json
-        user.reload
-        expect(user.name).to eq('Pedro Fausto')
+      it 'updates the requested product' do
+        product = create(:product)
+        patch api_v1_product_url(product),
+              params: { product: new_attributes }, headers: valid_headers, as: :json
+        product.reload
+        expect(product.stock).to eq(5)
+        expect(product.price).to eq(99.5)
         expect(response).to have_http_status(:ok)
         expect(response.body).to include_json(
-          name: 'Pedro Fausto'
+          stock: 5,
+          price: 99.5
         )
       end
 
-      it 'renders a JSON response with the user' do
-        user = create(:user)
-        patch api_v1_user_url(user),
-              params: { user: new_attributes }, headers: valid_headers, as: :json
+      it 'renders a JSON response with the product' do
+        product = create(:product)
+        patch api_v1_product_url(product),
+              params: { product: new_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including('application/json'))
       end
     end
 
     context 'with invalid parameters' do
-      it 'renders a JSON response with errors for the user' do
-        user = create(:user)
-        patch api_v1_user_url(user),
-              params: { user: invalid_attributes }, headers: valid_headers, as: :json
+      it 'renders a JSON response with errors for the product' do
+        product = create(:product)
+        patch api_v1_product_url(product),
+              params: { product: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to match(a_string_including('application/json'))
       end
@@ -123,11 +126,11 @@ RSpec.describe '/users', type: :request do
   end
 
   describe 'DELETE /destroy' do
-    it 'destroys the requested user' do
-      user = create(:user)
+    it 'destroys the requested product' do
+      product = create(:product)
       expect do
-        delete api_v1_user_url(user), headers: valid_headers, as: :json
-      end.to change(User, :count).by(-1)
+        delete api_v1_product_url(product), headers: valid_headers, as: :json
+      end.to change(Product, :count).by(-1)
     end
   end
 end

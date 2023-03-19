@@ -6,7 +6,7 @@ class Authorization
   end
 
   def current_user
-    @user ||= User.find(JsonWebToken.decode(@token)[:user_id]) if @token.present?
+    @user ||= User.find_by(token: JsonWebToken.decode(@token)[:user_token]) if @token.present?
   rescue StandardError => e
     e
   end
