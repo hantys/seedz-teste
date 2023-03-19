@@ -11,7 +11,7 @@ module Api
           render json: {
             message: 'Login efetuado com sucesso!',
             token: auth_object.generate_token,
-            user: auth_object.user
+            user: UserSerializer.new(auth_object.user).as_json
           }, status: :ok
         else
           render json: {

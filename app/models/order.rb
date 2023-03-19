@@ -14,14 +14,12 @@ class Order < ApplicationRecord
   def calc_total
     return unless product.present?
 
-    aux_product = Product.find product_id
-    self.total = amount * aux_product.price
+    self.total = (amount * product.price).round(2)
   end
 
   def verify_stock
-    if product.present?
-      aux_product = Product.find product_id
-      new_stock = aux_product.stock - amount
+    if product.present? 
+      new_stock = product.stock - amount
       return unless new_stock.negative?
 
       errors.add(:amount, 'não pode ser maior que o estoque')
