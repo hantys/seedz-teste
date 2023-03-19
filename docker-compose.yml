@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   app: 
-    network_mode: "host"
+    # network_mode: "host"
     build:
       context: .
       dockerfile: Dockerfile
@@ -21,7 +21,9 @@ services:
     image: postgres:14.7-alpine
     volumes:
       - db_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=seedz321
 
 volumes:
   gem_cache:
