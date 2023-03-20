@@ -12,113 +12,143 @@ require 'rails_helper'
 # of tools you can use to make these specs even more expressive, but we're
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
-RSpec.describe "/orders", type: :request do
+RSpec.describe '/orders', type: :request do
   before(:all) do
     @user = create(:user)
   end
 
   let(:valid_attributes) do
-    attributes_for(:order)
+    attributes_for(:order, product_id: create(:product).id, user_id: @user.id)
   end
 
   let(:invalid_attributes) do
-    attributes_for(:order, name: nil, price: nil)
+    attributes_for(:order, product: nil, amount: nil)
   end
 
   let(:valid_headers) do
     return { Authorization: JsonWebToken.encode(user_token: @user.token), 'Content-Type': 'application/json' }
   end
 
-  describe "GET /index" do
-    it "renders a successful response" do
+  describe 'GET /index' do
+    it 'renders a successful response' do
       create(:order)
       get api_v1_orders_url, headers: valid_headers, as: :json
       expect(response).to be_successful
+      expect(response.body).to include_json(
+        {	"orders": [] }
+      )
     end
   end
 
-  describe "GET /show" do
-    it "renders a successful response" do
+  describe 'GET /show' do
+    it 'renders a successful response' do
       order = create(:order)
       get api_v1_order_url(order), headers: valid_headers, as: :json
       expect(response).to be_successful
+      expect(response.body).to include_json(
+        order: {
+          id: order.id,
+          amount: order.amount,
+          total: order.total,
+          user: {
+            id: order.user.id,
+            email: order.user.email,
+            name: order.user.name
+          },
+          product: {
+            id: order.product.id,
+            name: order.product.name,
+            stock: order.product.stock,
+            price: order.product.price
+          }
+        }
+      )
     end
   end
 
-  describe "POST /create" do
-    context "with valid parameters" do
-      it "creates a new Order" do
-        expect {
+  describe 'POST /create' do
+    context 'with valid parameters' do
+      it 'creates a new Order' do
+        expect do
+          puts valid_attributes
           post api_v1_orders_url,
                params: { order: valid_attributes }, headers: valid_headers, as: :json
-        }.to change(Order, :count).by(1)
+        end.to change(Order, :count).by(1)
       end
 
-      it "renders a JSON response with the new order" do
+      it 'renders a JSON response with the new order' do
         post api_v1_orders_url,
              params: { order: valid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:created)
-        expect(response.content_type).to match(a_string_including("application/json"))
+        expect(response.content_type).to match(a_string_including('application/json'))
       end
     end
 
-    context "with invalid parameters" do
-      it "does not create a new Order" do
-        expect {
+    context 'with invalid parameters' do
+      it 'does not create a new Order' do
+        expect do
           post api_v1_orders_url,
                params: { order: invalid_attributes }, headers: valid_headers, as: :json
-        }.to change(Order, :count).by(0)
+        end.to change(Order, :count).by(0)
       end
 
-      it "renders a JSON response with errors for the new order" do
+      it 'renders a JSON response with errors for the new order' do
         post api_v1_orders_url,
              params: { order: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to match(a_string_including("application/json"))
+        expect(response.content_type).to match(a_string_including('application/json'))
       end
     end
   end
 
-  describe "PATCH /update" do
-    context "with valid parameters" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
+  describe 'PATCH /update' do
+    context 'with valid parameters' do
+      let(:new_attributes) do
+        attributes_for(:order, amount: 2)
+      end
 
-      it "updates the requested order" do
-        order = create(:order)
+      it 'updates the requested order' do
+        order = create(:order, amount: 1)
         patch api_v1_order_url(order),
               params: { order: new_attributes }, headers: valid_headers, as: :json
         order.reload
-        skip("Add assertions for updated state")
+        expect(order.amount).to eq(2)
+        expect(order.total).to eq((2 * order.product.price.round(2)))
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include_json(
+          order: {
+            id: order.id,
+            amount: 2
+          }
+        )
       end
 
-      it "renders a JSON response with the order" do
+      it 'renders a JSON response with the order' do
         order = create(:order)
         patch api_v1_order_url(order),
               params: { order: new_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:ok)
-        expect(response.content_type).to match(a_string_including("application/json"))
+        expect(response.content_type).to match(a_string_including('application/json'))
       end
     end
 
-    context "with invalid parameters" do
-      it "renders a JSON response with errors for the order" do
+    context 'with invalid parameters' do
+      it 'renders a JSON response with errors for the order' do
         order = create(:order)
         patch api_v1_order_url(order),
               params: { order: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to match(a_string_including("application/json"))
+        expect(response.content_type).to match(a_string_including('application/json'))
       end
     end
   end
 
-  describe "DELETE /destroy" do
-    it "destroys the requested order" do
+  describe 'DELETE /destroy' do
+    it 'destroys the requested order' do
       order = create(:order)
-      expect {
+      expect do
         delete api_v1_order_url(order), headers: valid_headers, as: :json
-      }.to change(Order, :count).by(-1)
+      end.to change(Order, :count).by(-1)
     end
   end
 end

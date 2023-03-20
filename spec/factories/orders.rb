@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :order do
-    user { create(:user) }
-    product { create(:product) }
+    user_id { create(:user).id }
+    product_id { create(:product).id }
     amount { 2 }
   end
 end

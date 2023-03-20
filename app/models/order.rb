@@ -14,12 +14,12 @@ class Order < ApplicationRecord
   def calc_total
     return unless product.present?
 
-    self.total = (amount * product.price).round(2)
+    self.total = (amount.to_i * product.price).round(2)
   end
 
   def verify_stock
     if product.present? 
-      new_stock = product.stock - amount
+      new_stock = product.stock - amount.to_i
       return unless new_stock.negative?
 
       errors.add(:amount, 'não pode ser maior que o estoque')
@@ -31,7 +31,7 @@ class Order < ApplicationRecord
   private
 
   def remove_stock
-    new_stock = product.stock - amount
+    new_stock = product.stock - amount.to_i
     product.update(stock: new_stock)
   end
 end

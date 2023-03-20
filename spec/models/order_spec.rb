@@ -53,7 +53,7 @@ RSpec.describe Order, type: :model do
       order = create(:order, product: product, amount: 2)
 
       expect(order.total).to eq(20)
-      expect(order.total).to eq(product.price * order.amount)
+      expect(order.total).to eq((product.price * order.amount).round(2))
     end
   end
 

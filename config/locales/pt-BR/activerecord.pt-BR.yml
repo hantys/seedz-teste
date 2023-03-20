@@ -1,7 +1,6 @@
 pt-BR:
   activerecord:
     models:
-     
       user: Usuário
       product: Produto
       order: Venda
@@ -55,6 +54,8 @@ pt-BR:
         <<: *default_attributes
         product: Produto
         product_id: Produto
+        user: Usuário
+        user_id: Usuário
         amount: Quantidade
         total: Total
 

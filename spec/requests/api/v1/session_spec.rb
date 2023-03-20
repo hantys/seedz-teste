@@ -82,8 +82,11 @@ RSpec.describe 'sessions', type: :request do
         expect(response).to have_http_status(:created)
         expect(response.content_type).to match(a_string_including('application/json'))
         expect(response.body).to include_json(
-          id: (be_kind_of Integer),
-          email: (be_kind_of String)
+          user: {
+            id: (be_kind_of Integer),
+            email: (be_kind_of String)
+
+          }
         )
       end
     end

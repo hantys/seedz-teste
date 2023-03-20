@@ -43,9 +43,12 @@ RSpec.describe '/users', type: :request do
       get api_v1_user_url(user), headers: valid_headers, as: :json
       expect(response).to be_successful
       expect(response.body).to include_json(
-        id: user.id,
-        email: user.email,
-        name: user.name
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name
+
+        }
       )
     end
   end
@@ -98,7 +101,10 @@ RSpec.describe '/users', type: :request do
         expect(user.name).to eq('Pedro Fausto')
         expect(response).to have_http_status(:ok)
         expect(response.body).to include_json(
-          name: 'Pedro Fausto'
+          user: {
+            name: 'Pedro Fausto'
+
+          }
         )
       end
 

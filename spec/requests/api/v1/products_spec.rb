@@ -43,10 +43,12 @@ RSpec.describe '/products', type: :request do
       get api_v1_product_url(product), headers: valid_headers, as: :json
       expect(response).to be_successful
       expect(response.body).to include_json(
-        id: product.id,
-        name: product.name,
-        stock: product.stock,
-        price: product.price
+        product: {
+          id: product.id,
+          name: product.name,
+          stock: product.stock,
+          price: product.price
+        }
       )
     end
   end
@@ -100,8 +102,10 @@ RSpec.describe '/products', type: :request do
         expect(product.price).to eq(99.5)
         expect(response).to have_http_status(:ok)
         expect(response.body).to include_json(
-          stock: 5,
-          price: 99.5
+          product: {
+            stock: 5,
+            price: 99.5
+          }
         )
       end
 
